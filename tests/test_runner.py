@@ -14,6 +14,7 @@ class TargetValidationTests(unittest.TestCase):
     def test_accepts_hostname_and_ip(self) -> None:
         self.assertEqual(validate_target("Example.COM."), "example.com")
         self.assertEqual(validate_target("1.1.1.1"), "1.1.1.1")
+        self.assertEqual(validate_target("2001:db8::8"), "2001:db8::8")
 
     def test_rejects_urls_paths_and_ports(self) -> None:
         for target in ("https://example.com", "example.com/path", "example.com:443", ""):

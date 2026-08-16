@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import getpass
+import ipaddress
 import os
 import re
 import socket
@@ -19,6 +20,7 @@ _IPV4 = re.compile(
 )
 _MAC = re.compile(r"(?i)(?<![0-9a-f])(?:[0-9a-f]{2}[:-]){5}[0-9a-f]{2}(?![0-9a-f])")
 _CREDENTIAL_URL = re.compile(r"(?i)(https?://)([^\s/@:]+):([^\s/@]+)@")
+_IPV6_CANDIDATE = re.compile(r"(?<![\w:])(?=[0-9A-Fa-f:]*:)[0-9A-Fa-f:]{2,}(?![\w:])")
 
 
 def _known_identifiers() -> tuple[str, ...]:
@@ -42,7 +44,16 @@ def sanitize_text(value: str) -> str:
     cleaned = _EMAIL.sub("[redacted-email]", cleaned)
     cleaned = _MAC.sub("[redacted-mac]", cleaned)
     cleaned = _IPV4.sub("[redacted-ip]", cleaned)
+    cleaned = _IPV6_CANDIDATE.sub(_redact_ipv6, cleaned)
     return cleaned
+
+
+def _redact_ipv6(match: re.Match[str]) -> str:
+    candidate = match.group(0)
+    try:
+        return "[redacted-ip]" if ipaddress.ip_address(candidate).version == 6 else candidate
+    except ValueError:
+        return candidate
 
 
 def sanitize_data(value: Any) -> Any:

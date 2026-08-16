@@ -7,12 +7,16 @@ from opsprobe.privacy import sanitize_data, sanitize_text
 
 class PrivacyTests(unittest.TestCase):
     def test_redacts_common_network_identifiers(self) -> None:
-        text = "user@example.org used 192.168.10.24 from AA:BB:CC:DD:EE:FF"
+        text = (
+            "user@example.org used 192.168.10.24 and 2001:db8::8 "
+            "from AA:BB:CC:DD:EE:FF"
+        )
         cleaned = sanitize_text(text)
 
         self.assertNotIn("user@example.org", cleaned)
         self.assertNotIn("192.168.10.24", cleaned)
         self.assertNotIn("AA:BB:CC:DD:EE:FF", cleaned)
+        self.assertNotIn("2001:db8::8", cleaned)
         self.assertIn("[redacted-email]", cleaned)
         self.assertIn("[redacted-ip]", cleaned)
         self.assertIn("[redacted-mac]", cleaned)

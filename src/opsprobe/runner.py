@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import ipaddress
 import re
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable
 
 from . import __version__
 from .checks import check_disk, check_dns, check_https, check_loopback, check_runtime, check_tcp
@@ -22,7 +22,7 @@ def validate_target(value: str) -> str:
     target = value.strip().rstrip(".")
     if not target or len(target) > 253:
         raise ValueError("target must be a hostname or IP address")
-    if any(character in target for character in "/:@?#"):
+    if any(character in target for character in "/@?#"):
         raise ValueError("use a hostname only, without a URL, path or port")
 
     try:
@@ -30,6 +30,9 @@ def validate_target(value: str) -> str:
         return target
     except ValueError:
         pass
+
+    if ":" in target:
+        raise ValueError("use a hostname only, without a URL, path or port")
 
     try:
         ascii_target = target.encode("idna").decode("ascii")

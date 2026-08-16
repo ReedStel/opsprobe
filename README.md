@@ -112,7 +112,7 @@ Default reports do not include the hostname, username, home-directory path or re
 
 - home paths, usernames and hostnames
 - email addresses
-- IPv4 addresses
+- IPv4 and IPv6 addresses
 - MAC addresses
 - credentials embedded in URLs
 

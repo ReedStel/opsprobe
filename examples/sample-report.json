@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "opsprobe_version": "0.1.0",
+  "generated_at": "2026-08-17T00:00:00+00:00",
+  "target": "example.com",
+  "overall_status": "pass",
+  "system": {
+    "operating_system": "Windows",
+    "os_release": "11",
+    "architecture": "AMD64",
+    "python_version": "3.12.5",
+    "logical_cpus": 16,
+    "memory_gb": 32.0,
+    "proxy_schemes": []
+  },
+  "checks": [
+    {
+      "name": "Disk headroom",
+      "status": "pass",
+      "summary": "Disk space has a healthy buffer.",
+      "duration_ms": 0.3,
+      "details": {
+        "total_gb": 953.9,
+        "free_gb": 412.7,
+        "free_percent": 43.3
+      },
+      "suggestion": null
+    },
+    {
+      "name": "DNS resolution",
+      "status": "pass",
+      "summary": "example.com resolved successfully.",
+      "duration_ms": 18.4,
+      "details": {
+        "record_count": 4,
+        "address_families": ["AF_INET", "AF_INET6"]
+      },
+      "suggestion": null
+    }
+  ],
+  "privacy": {
+    "identifiers_included": false,
+    "default_redaction": true,
+    "sharing_note": "Review exported files before sharing; redaction is best-effort, not a guarantee."
+  }
+}
